@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  root to: 'calculator#show'
+
   namespace :api do
     post 'evaluate' => 'calculate#evaluate'
   end
