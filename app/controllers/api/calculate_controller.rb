@@ -6,7 +6,10 @@ class Api::CalculateController < ApplicationController
     if result
       response = {
         formula: params[:formula],
-        result: result.to_s
+        result: {
+          common: result.to_s,
+          float: result.to_f.to_s
+        }
       }
       render json: response.to_json, status: 200
     else

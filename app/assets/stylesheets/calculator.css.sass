@@ -53,32 +53,31 @@
         transform: translate(-50%, -50%)
         animation: prompt-try-it 3s 4s infinite
 
-footer
-    border-top: 1px solid #258193
-    padding: 10px
-    .gitlab
-        .gitlab-logo
-            width: 20px
-    .logo
-        color: #258193
-        font-family: 'Ramaja', serif
-        font-size: 20px
-        font-style: italic
-        position: relative
-        .favicon
-            top: 0
-            position: absolute
-            width: 30px
-        span
-            display: block
-            margin-left: 30px
-    .footer-link
-        transition-duration: .4s
-        border-color: #258193
-        color: #258193
-        &:hover
-            background: linear-gradient(120deg, #1f317b 0%, #2ab8a5 100%)
-            color: #efeded
-
-
-    
+section#calculator
+    min-height: 92vh
+    .left-panel
+        .calculator
+            padding: 30px
+            border: 1px solid #258193
+            width: 270px
+            margin-left: auto
+            margin-right: auto
+            margin-top: 30px
+            margin-bottom: 30px
+            textarea#display
+                min-height: 100px
+                max-height: 200px
+                width: 100%
+                margin-top: 10px
+            .keyboard-row
+                position: relative
+            .btn-col
+                height: 60px
+            .btn
+                font-size: 1.2em
+                height: 45px
+                width: 80%
+                position: absolute
+                top: 50%
+                left: 50%
+                transform: translate(-50%, -50%)
