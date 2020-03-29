@@ -1,81 +1,62 @@
 .row
   .left-panel.col-xs-12.col-md-6
     .calculator
-      %textarea#display
+      .display-wrapper
+        %input#display{ type: 'text', onfocus: 'this.value = this.value' }
       .row
         .col-6
         #error-label.col-6
-          Incorrect syntax
+          %span.d-none
+            Incorrect syntax
       .keyboard-row.row
-        .btn-col.col-6
-          #ce-btn.calc-btn.btn.btn-primary
-            CE
-        .btn-col.col-6
-          #backspace-btn.calc-btn.btn.btn-primary
-            <--
+        #ce-btn.spec-btn.btn-col.col-6
+          CE
+        #backspace-btn.func-btn.btn-col.col-6
+          %i.fas.fa-long-arrow-alt-left
       .keyboard-row.row
-        .btn-col.col-3
-          #left-bracket-btn.calc-btn.btn.btn-primary
-            (
-        .btn-col.col-3
-          #right-bracket-btn.calc-btn.btn.btn-primary
-            )
-        .btn-col.col-3
-          #power-btn.calc-btn.btn.btn-primary
-            ^
-        .btn-col.col-3
-          #divide-btn.calc-btn.btn.btn-primary
-            \/
+        #left-bracket-btn.func-btn.btn-col.col-3
+          (
+        #right-bracket-btn.func-btn.btn-col.col-3
+          )
+        #power-btn.func-btn.btn-col.col-3
+          ^
+        #divide-btn.func-btn.btn-col.col-3
+          \/
       .keyboard-row.row
-        .btn-col.col-3
-          #seven-btn.calc-btn.btn.btn-primary
-            7
-        .btn-col.col-3
-          #eight-btn.calc-btn.btn.btn-primary
-            8
-        .btn-col.col-3
-          #nine-btn.calc-btn.btn.btn-primary
-            9
-        .btn-col.col-3
-          #multiply-btn.calc-btn.btn.btn-primary
-            *
+        #seven-btn.btn-col.col-3
+          7
+        #eight-btn.btn-col.col-3
+          8
+        #nine-btn.btn-col.col-3
+          9
+        #multiply-btn.func-btn.btn-col.col-3
+          *
       .keyboard-row.row
-        .btn-col.col-3
-          #four-btn.calc-btn.btn.btn-primary
-            4
-        .btn-col.col-3
-          #five-btn.calc-btn.btn.btn-primary
-            5
-        .btn-col.col-3
-          #six-btn.calc-btn.btn.btn-primary
-            6
-        .btn-col.col-3
-          #substract-btn.calc-btn.btn.btn-primary
-            \-
+        #four-btn.btn-col.col-3
+          4
+        #five-btn.btn-col.col-3
+          5
+        #six-btn.btn-col.col-3
+          6
+        #substract-btn.func-btn.btn-col.col-3
+          \-
       .keyboard-row.row
-        .btn-col.col-3
-          #one-btn.calc-btn.btn.btn-primary
-            1
-        .btn-col.col-3
-          #two-btn.calc-btn.btn.btn-primary
-            2
-        .btn-col.col-3
-          #three-btn.calc-btn.btn.btn-primary
-            3
-        .btn-col.col-3
-          #add-btn.calc-btn.btn.btn-primary
-            +
+        #one-btn.btn-col.col-3
+          1
+        #two-btn.btn-col.col-3
+          2
+        #three-btn.btn-col.col-3
+          3
+        #add-btn.func-btn.btn-col.col-3
+          +
       .keyboard-row.row
-        .btn-col.col-3
-          #decimal-separator-btn.calc-btn.btn.btn-primary
-            \.
-        .btn-col.col-3
-          #zero-btn.calc-btn.btn.btn-primary
-            0
-        .btn-col.col-3
-          #space-btn.calc-btn.btn.btn-primary
-            _
-        .btn-col.col-3
-          #result-btn.calc-btn.btn.btn-primary
-            \=
+        #decimal-separator-btn.btn-col.col-3
+          \.
+        #zero-btn.btn-col.col-3
+          0
+        #space-btn.btn-col.col-3
+          _
+        #result-btn.spec-btn.btn-col.col-3
+          \=
   .right-panel.col-xs-12.col-md-6
+    

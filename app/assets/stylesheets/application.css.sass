@@ -3,17 +3,33 @@
 @import tether
 @import font-awesome-sprockets
 @import font-awesome
-@import url('https://fonts.googleapis.com/css?family=Asar|Montserrat|Ramaraja&display=swap')
+@import url('https://fonts.googleapis.com/css?family=Asar|Montserrat|Ramaraja|Rationale&display=swap')
 
 body
     -webkit-font-smoothing: antialiased
-    background-color: #dae8e6
+    background: linear-gradient(50deg, #b2cfd8 0%, #6bc1b6 100%)
     font-family: 'Montserrat', sans-serif
+    box-sizing: border-box
+
+#reveal-main
+    height: 100vh
+main
+    position: fixed
+    bottom: 0
+    left: 0
+    padding-left: 15px
+    z-index: 1
+    width: 100vw
+    padding-right: 15px
 
 a
     text-decoration: none
 
 footer
+    position: absolute
+    width: 100vw
+    bottom: 0
+    height: 60px
     border-top: 1px solid #258193
     padding: 10px
     .gitlab

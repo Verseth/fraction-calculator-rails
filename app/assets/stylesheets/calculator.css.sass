@@ -1,6 +1,16 @@
 // font-family: 'Ramaraja', serif
 // font-family: 'Asar', serif
 // font-family: 'Montserrat', sans-serif
+// font-family: 'Rationale', sans-serif
+
+$light-text-color: #efeded
+$calculator-padding: 20px
+$calculator-bg: #2a3940eb
+$calculator-dark: #212d32eb
+$calculator-semi-dark: #212d32a6
+$main-green: #2ab8a5
+$main-blue: #1f317b
+$error-color: #ff3223
 
 @keyframes prompt-try-it
     0%
@@ -22,10 +32,10 @@
         left: 0
         background-size: cover
         background-repeat: no-repeat
+    z-index: 200
     height: 100vh
-    // background-color: #1f317b
-    background: linear-gradient(120deg, #1f317b 0%, #2ab8a5 100%)
-    color: #efeded
+    background: linear-gradient(120deg, $main-blue 0%, $main-green 100%)
+    color: $light-text-color
     position: relative
     .center-block
         position: absolute
@@ -40,7 +50,7 @@
             font-style: italic
         
         .underline
-            border-top: 1px solid #efeded
+            border-top: 1px solid $light-text-color
             margin-bottom: 20px
 
         .promo-text
@@ -52,32 +62,65 @@
         left: 50%
         transform: translate(-50%, -50%)
         animation: prompt-try-it 3s 4s infinite
+main
+    height: 100vh
 
 section#calculator
-    min-height: 92vh
     .left-panel
         .calculator
-            padding: 30px
-            border: 1px solid #258193
+            font-size: 1.2em
+            transition-duration: 1s
+            padding: $calculator-padding
+            color: $light-text-color
+            border-radius: 8px
+            background-color: $calculator-bg
             width: 270px
             margin-left: auto
             margin-right: auto
             margin-top: 30px
             margin-bottom: 30px
-            textarea#display
+            .display-wrapper
+                margin-left: #{$calculator-padding * -1}
+                margin-right: #{$calculator-padding * -1}
+            #display
+                border: none
+                background-color: $calculator-dark
+                font-family: 'Rationale', sans-serif
+                text-align: right
                 min-height: 100px
                 max-height: 200px
+                font-size: 1.6em
                 width: 100%
                 margin-top: 10px
+                color: $light-text-color
+                padding: 5px
+            #error-label
+                font-size: .65em
+                color: #ff3223
+                padding: 2px
+                height: 30px
             .keyboard-row
                 position: relative
-            .btn-col
-                height: 60px
-            .btn
+                margin-left: #{$calculator-padding * -1}
+                margin-right: #{$calculator-padding * -1}
+            #backspace-btn
                 font-size: 1.2em
-                height: 45px
-                width: 80%
-                position: absolute
-                top: 50%
-                left: 50%
-                transform: translate(-50%, -50%)
+            .spec-btn
+                font-weight: bold
+                color: #fa8b29
+            .func-btn
+                font-weight: bold
+                color: $main-green
+            .btn-col
+                &:hover
+                    cursor: pointer
+                    background-color: $calculator-dark
+                    transition-duration: .3s
+                &:active
+                    background-color: $calculator-semi-dark
+                    transition-duration: .25s
+                transition-duration: .3s
+                border-radius: 4px
+                text-align: center
+                height: 60px
+                padding: 15px

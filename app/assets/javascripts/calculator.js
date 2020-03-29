@@ -1,37 +1,118 @@
+var oldFormula = ''
+var error = false
+
+function charIsAnOperator(char) {
+    switch(char) {
+        case '*':
+        case '+':
+        case '-':
+        case '^':
+            return true
+        default:
+            return false
+    }
+}
+
+function charIsADigit(char) {
+    switch(char) {
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+            return true
+        default:
+            return false
+    }
+}
+
 function appendCharToFormula(char){
-    let oldVal = $('textarea#display').val()
-    $('textarea#display').val(oldVal + char)
+    var newVal = $('#display').val()
+    if(charIsAnOperator(char)) {
+        trimmed = newVal.trim()
+        if(char == '-' && trimmed.length == 0){
+            trimmed += '('
+            newVal = trimmed
+        }
+        else if(char == '-' && charIsADigit(trimmed[trimmed.length-1])){
+            trimmed += ') '
+            newVal = trimmed
+        }
+        else if(char == '-' || char == '/'){}
+        else if(charIsAnOperator(trimmed[trimmed.length-1]) || trimmed.length == 0){
+            return false
+        } 
+        else if(trimmed.length > 0 && charIsADigit(trimmed[trimmed.length-1])) { 
+            trimmed += ') '
+            newVal = trimmed
+        }
+    } 
+    else if(charIsADigit(char)) {
+        trimmed = newVal.trim()
+        if(trimmed.length == 0) { 
+            trimmed += '('
+            newVal = trimmed
+        }
+        else if(charIsAnOperator(trimmed[trimmed.length-1]) && trimmed[trimmed.length-1] != '-') {
+            trimmed += ' ('
+            newVal = trimmed
+        }
+        else if(trimmed[trimmed.length-1] == '/') {
+            newTrim = trimmed.substring(0, trimmed.length - 1).trim()
+            if(newTrim[newTrim.length-1] == ')'){
+                newTrim += ' / ('
+                newVal = newTrim
+            }
+        }
+    }
+    newVal += char
+    $('#display').focus()
+    $('#display').val(newVal)
 }
 
 function evaluate() {
-    let formula = $('textarea#display').val()
-    let xhr = new window.XMLHttpRequest()
-    let formData = new window.FormData()
-    formData.append('formula', formula)
-    xhr.open('POST', '/api/evaluate', true)
-    xhr.onload = (event) => {
-        if (xhr.status === 200) {
-            let response = JSON.parse(event.target.response)
-            let oldFormula = $('textarea#display').val()
-            let result = response.result
-            $('textarea#display').val(result.common)
-        } else {
-            console.log('fail ' + xhr.status)
+    let formula = $('#display').val()
+    if(formula != oldFormula) {
+        if(formula.length > 0 && charIsADigit(formula[formula.length-1]))
+            formula += ')'
+        let xhr = new window.XMLHttpRequest()
+        let formData = new window.FormData()
+        formData.append('formula', formula)
+        xhr.open('POST', '/api/evaluate', true)
+        xhr.onload = (event) => {
+            if (xhr.status === 200) {
+                $('#error-label span').addClass('d-none')
+                let response = JSON.parse(event.target.response)
+                oldFormula = $('#display').val()
+                let result = response.result
+                $('#display').val(result.common)
+            } else {
+                $('#error-label span').removeClass('d-none')
+                oldFormula = $('#display').val()
+                error = true
+            }
         }
+        xhr.send(formData)
     }
-    xhr.send(formData)
+    else if(error) $('#error-label span').removeClass('d-none')
 }
 
 function backspace() {
-    let oldVal = $('textarea#display').val()
-    $('textarea#display').val(oldVal.slice(0, -1))
+    let oldVal = $('#display').val()
+    $('#display').val(oldVal.slice(0, -1))
 }
 
 function clearCalc() {
-
+    $('#display').val('')
 }
 
 function handleCalculatorClick(type, char) {
+    $('#error-label span').addClass('d-none')
     if(type == 'function'){
         switch(char) {
             case 'ce':
@@ -53,7 +134,7 @@ function handleCalculatorClick(type, char) {
 $(document).ready( () => {
     $("#try-it").click(function() {
         $([document.documentElement, document.body]).animate({
-            scrollTop: $("#calculator").offset().top
+            scrollTop: $("#reveal-main").offset().top
         }, 1500)
     })
 

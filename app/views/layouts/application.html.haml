@@ -10,5 +10,5 @@
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
     = favicon_link_tag asset_path('favicon.png')
   %body
-    %main{ class: "container-fluid #{controller.controller_name}" }
+    %div{ class: "container-fluid #{controller.controller_name}" }
       = yield
