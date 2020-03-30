@@ -1,8 +1,12 @@
 .row
-  .left-panel.col-xs-12.col-md-6
-    .calculator
+  #left-panel.col-xs-12.col-md-6
+    .calculator.width-270
+      #expander{ title: 'Expand' }
+        %i.fas.fa-chevron-right
+      #shrinker{ title: 'Shrink' }
+        %i.fas.fa-chevron-left
       .display-wrapper
-        %input#display{ type: 'text', onKeyDown: 'inputControl()' }
+        %input#display{ type: 'text', onKeyDown: 'inputControl()', title: 'Display' }
       .row
         .col-6
         #error-label.col-6
@@ -11,64 +15,64 @@
           %span#division.d-none
             Dividing by zero!
       .keyboard-row.row
-        #ce-btn.spec-btn.btn-col.col-3
+        #ce-btn.spec-btn.btn-col.col-3{ title: 'Clear' }
           CE
-        #slash-btn.func-btn.btn-col.col-3
+        #slash-btn.func-btn.btn-col.col-3{ title: 'Divide' }
           \/
-        #backspace-btn.func-btn.btn-col.col-6
+        #backspace-btn.func-btn.btn-col.col-6{ title: 'Backspace' }
           %i.fas.fa-long-arrow-alt-left
           // <--
       .keyboard-row.row
-        #left-bracket-btn.func-btn.btn-col.col-3
+        #left-bracket-btn.func-btn.btn-col.col-3{ title: 'Left bracket' }
           (
-        #right-bracket-btn.func-btn.btn-col.col-3
+        #right-bracket-btn.func-btn.btn-col.col-3{ title: 'Right bracket' }
           )
-        #power-btn.func-btn.btn-col.col-3 
+        #power-btn.func-btn.btn-col.col-3{ title: 'Power' }
           x
           %sup y
           // **
-        #divide-btn.func-btn.btn-col.col-3
+        #divide-btn.func-btn.btn-col.col-3{ title: 'Divide' }
           %i.fas.fa-divide
           // ÷
       .keyboard-row.row
-        #seven-btn.btn-col.col-3
+        #seven-btn.btn-col.col-3{ title: 'Seven' }
           7
-        #eight-btn.btn-col.col-3
+        #eight-btn.btn-col.col-3{ title: 'Eight' }
           8
-        #nine-btn.btn-col.col-3
+        #nine-btn.btn-col.col-3{ title: 'Nine' }
           9
-        #multiply-btn.func-btn.btn-col.col-3
+        #multiply-btn.func-btn.btn-col.col-3{ title: 'Multiply' }
           %i.fas.fa-times
           // *
       .keyboard-row.row
-        #four-btn.btn-col.col-3
+        #four-btn.btn-col.col-3{ title: 'Four' }
           4
-        #five-btn.btn-col.col-3
+        #five-btn.btn-col.col-3{ title: 'Five' }
           5
-        #six-btn.btn-col.col-3
+        #six-btn.btn-col.col-3{ title: 'Six' }
           6
-        #substract-btn.func-btn.btn-col.col-3
+        #substract-btn.func-btn.btn-col.col-3{ title: 'Substract' }
           %i.fas.fa-minus
           // -
       .keyboard-row.row
-        #one-btn.btn-col.col-3
+        #one-btn.btn-col.col-3{ title: 'One' }
           1
-        #two-btn.btn-col.col-3
+        #two-btn.btn-col.col-3{ title: 'Two' }
           2
-        #three-btn.btn-col.col-3
+        #three-btn.btn-col.col-3{ title: 'Three' }
           3
-        #add-btn.func-btn.btn-col.col-3
+        #add-btn.func-btn.btn-col.col-3{ title: 'Add' }
           %i.fas.fa-plus
           // +
       .keyboard-row.row
-        #decimal-separator-btn.btn-col.col-3
+        #decimal-separator-btn.btn-col.col-3{ title: 'Decimal separator' }
           \.
-        #zero-btn.btn-col.col-3
+        #zero-btn.btn-col.col-3{ title: 'Zero' }
           0
-        #space-btn.btn-col.col-3
+        #space-btn.btn-col.col-3{ title: 'Space' }
           _
-        #result-btn.spec-btn.btn-col.col-3
+        #result-btn.spec-btn.btn-col.col-3{ title: 'Calculate' }
           %i.fas.fa-equals
           // =
-  .right-panel.col-xs-12.col-md-6
+  #right-panel.col-xs-12.col-md-6
     

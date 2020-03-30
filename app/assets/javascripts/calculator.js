@@ -332,6 +332,22 @@ function handleCalculatorClick(type, char) {
     }
 }
 
+function expandCalc() {
+    $('#right-panel').hide('slow')
+    $('#left-panel').addClass('offset-md-3')
+    $('#left-panel .calculator').removeClass('width-270')
+    $('#expander').hide('slow')
+    $('#shrinker').show('slow')
+}
+
+function shrinkCalc() {
+    $('#right-panel').show('slow')
+    $('#left-panel').removeClass('offset-md-3')
+    $('#left-panel .calculator').addClass('width-270')
+    $('#expander').show('slow')
+    $('#shrinker').hide('slow')
+}
+
 
 $(document).ready( () => {
     $("#try-it").click(function() {
@@ -339,6 +355,9 @@ $(document).ready( () => {
             scrollTop: $("#reveal-main").offset().top
         }, 1500)
     })
+
+    $(document).on('click', '#expander', function() { expandCalc() })
+    $(document).on('click', '#shrinker', function() { shrinkCalc() })
 
     $(document).on('click', '#ce-btn', function() { handleCalculatorClick('function', 'ce') })
     $(document).on('click', '#slash-btn', function() { handleCalculatorClick('symbol', '/') })

@@ -11,6 +11,8 @@ $calculator-semi-dark: #212d32a6
 $main-green: #2ab8a5
 $main-blue: #1f317b
 $error-color: #ff3223
+$special-orange: #fa8b29
+$darker-orange: #e8842b
 
 @keyframes prompt-try-it
     0%
@@ -19,6 +21,12 @@ $error-color: #ff3223
         transform: translate(-50%, -20%)
     70%
         transform: translate(-50%, -50%)
+
+@media screen and (max-width: 767px)
+    #expander, #shrinker
+        display: none !important
+    #right-panel
+        display: none
 
 .logo-container
     &:before
@@ -66,19 +74,32 @@ main
     height: 100vh
 
 section#calculator
-    .left-panel
+    #left-panel
+        transition-duration: 1s
+        .calculator.width-270
+            width: 270px
         .calculator
             font-size: 1.2em
             transition-duration: 1s
             padding: $calculator-padding
             color: $light-text-color
+            width: 100%
+            max-width: 600px
             border-radius: 8px
             background-color: $calculator-bg
-            width: 270px
             margin-left: auto
             margin-right: auto
             margin-top: 30px
             margin-bottom: 30px
+            position: relative
+            #expander, #shrinker
+                color: $darker-orange
+                position: absolute
+                bottom: 50%
+                right: -1em
+                font-size: 1.4em
+            #shrinker
+                display: none
             .display-wrapper
                 margin-left: #{$calculator-padding * -1}
                 margin-right: #{$calculator-padding * -1}
@@ -96,7 +117,7 @@ section#calculator
                 padding: 5px
             #error-label
                 font-size: .65em
-                color: #ff3223
+                color: $error-color
                 padding: 2px
                 height: 30px
             .keyboard-row
@@ -107,7 +128,7 @@ section#calculator
                 font-size: 1.2em
             .spec-btn
                 font-weight: bold
-                color: #fa8b29
+                color: $special-orange
             .func-btn
                 font-weight: bold
                 color: $main-green
