@@ -2,26 +2,34 @@
   .left-panel.col-xs-12.col-md-6
     .calculator
       .display-wrapper
-        %input#display{ type: 'text', onfocus: 'this.value = this.value' }
+        %input#display{ type: 'text', onKeyDown: 'inputControl()' }
       .row
         .col-6
         #error-label.col-6
-          %span.d-none
+          %span#syntax.d-none
             Incorrect syntax
+          %span#division.d-none
+            Dividing by zero!
       .keyboard-row.row
-        #ce-btn.spec-btn.btn-col.col-6
+        #ce-btn.spec-btn.btn-col.col-3
           CE
+        #slash-btn.func-btn.btn-col.col-3
+          \/
         #backspace-btn.func-btn.btn-col.col-6
           %i.fas.fa-long-arrow-alt-left
+          // <--
       .keyboard-row.row
         #left-bracket-btn.func-btn.btn-col.col-3
           (
         #right-bracket-btn.func-btn.btn-col.col-3
           )
-        #power-btn.func-btn.btn-col.col-3
-          ^
+        #power-btn.func-btn.btn-col.col-3 
+          x
+          %sup y
+          // **
         #divide-btn.func-btn.btn-col.col-3
-          \/
+          %i.fas.fa-divide
+          // ÷
       .keyboard-row.row
         #seven-btn.btn-col.col-3
           7
@@ -30,7 +38,8 @@
         #nine-btn.btn-col.col-3
           9
         #multiply-btn.func-btn.btn-col.col-3
-          *
+          %i.fas.fa-times
+          // *
       .keyboard-row.row
         #four-btn.btn-col.col-3
           4
@@ -39,7 +48,8 @@
         #six-btn.btn-col.col-3
           6
         #substract-btn.func-btn.btn-col.col-3
-          \-
+          %i.fas.fa-minus
+          // -
       .keyboard-row.row
         #one-btn.btn-col.col-3
           1
@@ -48,7 +58,8 @@
         #three-btn.btn-col.col-3
           3
         #add-btn.func-btn.btn-col.col-3
-          +
+          %i.fas.fa-plus
+          // +
       .keyboard-row.row
         #decimal-separator-btn.btn-col.col-3
           \.
@@ -57,6 +68,7 @@
         #space-btn.btn-col.col-3
           _
         #result-btn.spec-btn.btn-col.col-3
-          \=
+          %i.fas.fa-equals
+          // =
   .right-panel.col-xs-12.col-md-6
     

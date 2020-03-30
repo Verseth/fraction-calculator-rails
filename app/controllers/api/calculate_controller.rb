@@ -16,6 +16,9 @@ class Api::CalculateController < ApplicationController
       response = { error: 'Incorrect syntax!', formula: params[:formula] }
       render json: response.to_json, status: 422
     end
+  rescue Fractify::DividingByZeroError => _e
+    response = { warning: 'Dividing by zero!', formula: params[:formula] }
+    render json: response.to_json, status: 201
   end
 
   private

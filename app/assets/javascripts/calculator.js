@@ -1,9 +1,15 @@
-var oldFormula = ''
-var error = false
+oldFormula = ''
+syntaxError = false
+divisionError = false
+validChars = ' 0123456789.-+/:÷*^()'
+restOfTheFormula = ''
+extraChars = 0
 
 function charIsAnOperator(char) {
     switch(char) {
         case '*':
+        case ':':
+        case '÷':
         case '+':
         case '-':
         case '^':
@@ -31,48 +37,226 @@ function charIsADigit(char) {
     }
 }
 
-function appendCharToFormula(char){
+function setCaretPosition(elemId, caretPos) {
+    var elem = document.getElementById(elemId);
+
+    if(elem != null) {
+        if(elem.createTextRange) {
+            var range = elem.createTextRange();
+            range.move('character', caretPos);
+            range.select();
+        }
+        else {
+            if(elem.selectionStart) {
+                elem.focus();
+                elem.setSelectionRange(caretPos, caretPos);
+            }
+            else
+                elem.focus();
+        }
+    }
+}
+
+// this function lets users be more careless with the way they input
+// the calculation formula by filling in the neccessary characters
+// to make sure syntax is viable along the way
+
+// returns true when `char` can be added to the formula
+function fixTheFormula(char, caretAt, onlyCheck=false) {
     var newVal = $('#display').val()
+    extraChars = 0
+
+    if(caretAt != undefined){
+        restOfTheFormula = newVal.substring(caretAt)
+        newVal = newVal.substring(0, caretAt)
+    }
+
+    trimmed = newVal.trim()
+    // if(trimmed.length > 0) {
+    //     for(i = newVal.length-1; i >= 0; i--){
+    //         if(newVal[i] == trimmed[trimmed.length-1]) {
+    //             extraChars -= newVal.length-1 - i
+    //         }
+    //     }
+    // }
+    newTrim = trimmed.substring(0, trimmed.length - 1).trim()
+    lastChar = trimmed[trimmed.length-1]
+    secondToLastChar = newTrim[newTrim.length-1]
     if(charIsAnOperator(char)) {
-        trimmed = newVal.trim()
-        if(char == '-' && trimmed.length == 0){
+        if((char == '-' && trimmed.length == 0)){
             trimmed += '('
+            extraChars += 1
             newVal = trimmed
         }
-        else if(char == '-' && charIsADigit(trimmed[trimmed.length-1])){
+        else if(lastChar == ')'){
+            trimmed += ' '
+            extraChars += 1
+            newVal = trimmed
+        }
+        else if(char == '-' && charIsADigit(lastChar)){
             trimmed += ') '
+            extraChars += 2
             newVal = trimmed
         }
-        else if(char == '-' || char == '/'){}
-        else if(charIsAnOperator(trimmed[trimmed.length-1]) || trimmed.length == 0){
+        else if(char == '-' && charIsAnOperator(lastChar) && secondToLastChar == ')') {
+            trimmed += ' ('
+            extraChars += 2
+            newVal = trimmed
+        }
+        else if(char == '-' && lastChar == '-'){
+            return false
+        }
+        else if(char == '-'){}
+        else if(charIsAnOperator(lastChar) || trimmed.length == 0){
             return false
         } 
-        else if(trimmed.length > 0 && charIsADigit(trimmed[trimmed.length-1])) { 
+        else if(trimmed.length > 0 && charIsADigit(lastChar)) { 
             trimmed += ') '
+            extraChars += 2
             newVal = trimmed
+        }
+        restOfTheFormula = restOfTheFormula.trim()
+        if(restOfTheFormula.length > 0) {
+            if(charIsADigit(restOfTheFormula[0])){
+                restOfTheFormula = ' (' + restOfTheFormula
+                extraChars += 2
+            }
         }
     } 
     else if(charIsADigit(char)) {
-        trimmed = newVal.trim()
         if(trimmed.length == 0) { 
             trimmed += '('
+            extraChars += 1
             newVal = trimmed
         }
-        else if(charIsAnOperator(trimmed[trimmed.length-1]) && trimmed[trimmed.length-1] != '-') {
+        else if(lastChar == ')'){
+            return false
+        }
+        else if(lastChar == '-' && secondToLastChar == ')') {
             trimmed += ' ('
+            extraChars += 2
             newVal = trimmed
         }
-        else if(trimmed[trimmed.length-1] == '/') {
-            newTrim = trimmed.substring(0, trimmed.length - 1).trim()
-            if(newTrim[newTrim.length-1] == ')'){
-                newTrim += ' / ('
-                newVal = newTrim
-            }
+        else if(charIsAnOperator(lastChar) && lastChar != '-') {
+            trimmed += ' ('
+            extraChars += 2
+            newVal = trimmed
+        }
+        else if(lastChar == '/' && secondToLastChar == ')') {
+            newTrim += ' / ('
+            extraChars += 4
+            newVal = newTrim
         }
     }
+    else if(char == '/'){
+        if(!charIsADigit(lastChar) && lastChar != ')') {
+            return false
+        }
+    }
+    else if(char == '(' && charIsAnOperator(lastChar)) {
+        trimmed += ' '
+        extraChars += 1
+        newVal = trimmed
+    }
+    else if(char == '.') {
+        if(trimmed.length == 0 || lastChar == '.' ||
+           lastChar == '/' || lastChar == '(' ||
+           lastChar == ')' || charIsAnOperator(lastChar)) {
+            return false
+        }
+        newVal = trimmed
+    }
+
+    if(!onlyCheck)
+        $('#display').val(newVal)
+    return true
+}
+
+function appendCharToFormula(char) {
+    restOfTheFormula = ''
+    if(!fixTheFormula(char)) return false
+    var newVal = $('#display').val()
     newVal += char
-    $('#display').focus()
     $('#display').val(newVal)
+    $('#display').focus()
+}
+
+function enterTheRest() {
+    var newVal = $('#display').val()
+    $('#display').val(newVal + restOfTheFormula)
+    restOfTheFormula = ''
+}
+
+function isAControlKey(key) {
+    if(key == 'ArrowRight' || key == 'Backspace' || key == 'ArrowLeft' ||
+       key == 'ArrowUp' || key == 'ArrowDown' || key == 'Control' ||
+       key == 'Shift' ||key == 'Meta' || key == 'F5' || key == 'Alt')
+        return true
+    else return false
+}
+
+function inputControl() {
+    var e = event || window.event
+    var key = e.key
+    var altKey = key
+    var caretAt = e.target.selectionStart
+    var selEnd = e.target.selectionEnd
+
+    if(key == 'Enter'){
+        evaluate()
+        return true
+    }
+
+    if((e.metaKey || e.ctrlKey) && (key == 'c' || key == 'v' || key == 'a' || key == 'x') || isAControlKey(key))
+        return true
+
+    // text is selected
+    if(caretAt != selEnd){
+        formula = $('#display').val()
+
+        firstPart = formula.substring(0, caretAt)
+        lastPart = formula.substring(selEnd)
+        if(fixTheFormula(key, caretAt, true))
+            formula = $('#display').val(firstPart + lastPart)
+        else {
+            if (e.preventDefault) e.preventDefault() //normal browsers
+            e.returnValue = false //IE
+            return false
+        }
+    }
+
+    if(key == ':' || key == '?') {
+        if (e.preventDefault) e.preventDefault() //normal browsers
+        e.returnValue = false //IE
+
+        altKey = '÷'
+
+        if(fixTheFormula(altKey, caretAt, true)){
+            fixTheFormula(altKey, caretAt)
+            formula = $('#display').val()
+            $('#display').val(formula + '÷')
+            enterTheRest()
+            setCaretPosition('display', caretAt + 1 + extraChars)
+        }
+        else return false
+
+        return true
+    }
+
+    for(i = 0; i < validChars.length; i++)
+        if(key == validChars[i]) {
+            if(fixTheFormula(key, caretAt)){
+                setTimeout(enterTheRest, 0)
+                setTimeout(function() {
+                    setCaretPosition('display', caretAt + 1 + extraChars)
+                }, 0)
+                return true
+            }
+        }
+
+    if (e.preventDefault) e.preventDefault() //normal browsers
+    e.returnValue = false //IE
+    return false
 }
 
 function evaluate() {
@@ -86,39 +270,56 @@ function evaluate() {
         xhr.open('POST', '/api/evaluate', true)
         xhr.onload = (event) => {
             if (xhr.status === 200) {
-                $('#error-label span').addClass('d-none')
+                $('#syntax').addClass('d-none')
                 let response = JSON.parse(event.target.response)
                 oldFormula = $('#display').val()
                 let result = response.result
                 $('#display').val(result.common)
-            } else {
-                $('#error-label span').removeClass('d-none')
+                syntaxError = false
+                divisionError = false
+            } else if (xhr.status == 201) {
+                $('#division').removeClass('d-none')
+                $('#display').val(formula)
                 oldFormula = $('#display').val()
-                error = true
+                syntaxError = false
+                divisionError = true
+            } else {
+                $('#syntax').removeClass('d-none')
+                $('#display').val(formula)
+                oldFormula = $('#display').val()
+                divisionError = false
+                syntaxError = true
             }
         }
         xhr.send(formData)
+    } else {
+        if(syntaxError) $('#syntax').removeClass('d-none')
+        if(divisionError) $('#division').removeClass('d-none')
     }
-    else if(error) $('#error-label span').removeClass('d-none')
 }
 
 function backspace() {
     let oldVal = $('#display').val()
     $('#display').val(oldVal.slice(0, -1))
+    $('#display').focus()
 }
 
 function clearCalc() {
     $('#display').val('')
+    oldFormula = ''
+    syntaxError = false
+    divisionError = false
 }
 
 function handleCalculatorClick(type, char) {
-    $('#error-label span').addClass('d-none')
     if(type == 'function'){
         switch(char) {
             case 'ce':
+                $('#error-label span').addClass('d-none')
                 clearCalc()
                 break
             case 'backspace':
+                $('#error-label span').addClass('d-none')
                 backspace()
                 break
             case '=':
@@ -126,6 +327,7 @@ function handleCalculatorClick(type, char) {
                 break
         }
     } else {
+        $('#error-label span').addClass('d-none')
         appendCharToFormula(char)
     }
 }
@@ -139,12 +341,13 @@ $(document).ready( () => {
     })
 
     $(document).on('click', '#ce-btn', function() { handleCalculatorClick('function', 'ce') })
+    $(document).on('click', '#slash-btn', function() { handleCalculatorClick('symbol', '/') })
     $(document).on('click', '#backspace-btn', function() { handleCalculatorClick('function', 'backspace') })
 
     $(document).on('click', '#left-bracket-btn', function() { handleCalculatorClick('symbol', '(') })
     $(document).on('click', '#right-bracket-btn', function() { handleCalculatorClick('symbol', ')') })
     $(document).on('click', '#power-btn', function() { handleCalculatorClick('symbol', '^') })
-    $(document).on('click', '#divide-btn', function() { handleCalculatorClick('symbol', '/') })
+    $(document).on('click', '#divide-btn', function() { handleCalculatorClick('symbol', '÷') })
 
     $(document).on('click', '#seven-btn', function() { handleCalculatorClick('symbol', '7') })
     $(document).on('click', '#eight-btn', function() { handleCalculatorClick('symbol', '8') })
