@@ -5,7 +5,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-gem 'bcrypt', '~> 3.1.7'
 gem 'bootstrap'
 gem 'coffee-rails', '~> 4.2'
 gem 'font-awesome-sass', '~> 5.12.0'
@@ -15,16 +14,12 @@ gem 'haml-rails'
 gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
-gem 'kaminari' # PAGINATION
 gem 'popper_js'
-gem 'premailer-rails' # CSS support for emails
 gem 'puma', '~> 3.7'
 gem 'rails', '~> 5.1.7'
 gem 'sass-rails', '~> 5.0'
 gem 'tether-rails'
 gem 'turbolinks', '~> 5'
-gem 'uglifier', '>= 1.3.0'
-gem 'underscore-rails' # underscore.js epic library
 
 group :development do
   gem 'better_errors'
