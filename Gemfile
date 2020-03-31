@@ -16,7 +16,6 @@ gem 'jbuilder', '~> 2.5'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
 gem 'kaminari' # PAGINATION
-gem 'mysql2'
 gem 'popper_js'
 gem 'premailer-rails' # CSS support for emails
 gem 'puma', '~> 3.7'
