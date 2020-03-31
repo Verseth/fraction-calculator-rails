@@ -3,12 +3,56 @@
 @import tether
 @import font-awesome-sprockets
 @import font-awesome
-@import url('https://fonts.googleapis.com/css?family=Asar|Montserrat|Ramaraja|Rationale&display=swap')
+@import url('https://fonts.googleapis.com/css?family=Montserrat|Ramaraja|Rationale&display=swap')
+
+@keyframes prompt-try-it
+    0%
+        transform: translate(-50%, -50%)
+    25%
+        transform: translate(-50%, -20%)
+    70%
+        transform: translate(-50%, -50%)
+
+@media screen and (max-width: 767px)
+    #expander, #shrinker
+        display: none !important
+    #right-panel
+        display: none
+    section#calculator
+        #left-panel
+            .calculator
+                width: 270px
+@media screen and (min-height: 1000px)
+    section#calculator
+        font-size: 1.2em
+
+
+$calculator-padding: 20px
+
+$light-text-color: #efeded
+$light-translucent-color: #efeded82
+$calculator-bg: #2a3940eb
+$calculator-dark: #212d32eb
+$calculator-semi-dark: #212d32a6
+$main-green: #2ab8a5
+$main-blue: #1f317b
+$light-blue: #00bcd4
+$error-color: #ff3223
+$special-orange: #fa8b29
+$darker-orange: #e8842b
+$footer-text-color: #258193
+
+$body-gradient: linear-gradient(50deg, #b2cfd8 0%, #6bc1b6 100%)
+$main-gradient: linear-gradient(120deg, $main-blue 0%, $main-green 100%)
+
+$display-font: 'Rationale', sans-serif
+$standard-font: 'Montserrat', sans-serif
+$logo-font: 'Ramaja', serif
 
 body
     -webkit-font-smoothing: antialiased
-    background: linear-gradient(50deg, #b2cfd8 0%, #6bc1b6 100%)
-    font-family: 'Montserrat', sans-serif
+    background: $body-gradient
+    font-family: $standard-font
     box-sizing: border-box
 
 #reveal-main
@@ -21,23 +65,178 @@ main
     z-index: 1
     width: 100vw
     padding-right: 15px
+    height: 100vh
 
 a
     text-decoration: none
+
+.logo-container
+    &:before
+        content: ''
+        background: asset_url('logo-bg.png')
+        background-position: center center
+        position: absolute
+        top: 0
+        right: 0
+        bottom: 0
+        left: 0
+        background-size: cover
+        background-repeat: no-repeat
+    z-index: 200
+    height: 100vh
+    background: $main-gradient
+    color: $light-text-color
+    position: relative
+    .center-block
+        position: absolute
+        text-align: center
+        top: 40%
+        left: 50%
+        transform: translate(-50%)
+        
+        .logo-text
+            font-family: $logo-font
+            font-size: 60px
+            font-style: italic
+        
+        .underline
+            border-top: 1px solid $light-text-color
+            margin-bottom: 20px
+
+        .promo-text
+            font-family: $standard-font
+    #try-it
+        font-size: 32px
+        position: absolute
+        bottom: 2%
+        left: 50%
+        transform: translate(-50%, -50%)
+        animation: prompt-try-it 3s 4s infinite
+
+.progress-cursor
+    cursor: progress !important
+    div
+        cursor: progress !important
+
+section#calculator
+    height: calc(93vh - 60px)
+
+    .history-btn
+        position: absolute
+        top: 3px
+        font-size: .9em
+        left: 7px
+        color: $light-blue
+        cursor: pointer
+    #no-history-btn
+        color: $light-translucent-color
+        cursor: help
+    #history-btn
+        display: none
+    #last-formula-label
+        text-align: right
+        font-family: $display-font
+        font-size: .9em
+        position: absolute
+        top: 11px
+        right: 0
+        color: $light-translucent-color
+        width: 100%
+        white-space: nowrap                  
+        overflow: hidden
+        padding-right: 5px
+        padding-left: 5px
+    #left-panel
+        transition-duration: 1s
+        .calculator.width-270
+            width: 270px
+    .calculator
+        font-size: 1.2em
+        transition-duration: 1s
+        padding: $calculator-padding
+        color: $light-text-color
+        width: 100%
+        max-width: 600px
+        border-radius: 8px
+        background-color: $calculator-bg
+        margin-left: auto
+        margin-right: auto
+        margin-top: 30px
+        margin-bottom: 30px
+        position: absolute
+        left: 50%
+        top: 50%
+        transform: translate(-50%, -50%)
+        #expander, #shrinker
+            cursor: pointer
+            color: $darker-orange
+            position: absolute
+            bottom: 50%
+            right: -1em
+            font-size: 1.4em
+        #shrinker
+            display: none
+        .display-wrapper
+            margin-left: #{$calculator-padding * -1}
+            margin-right: #{$calculator-padding * -1}
+            position: relative
+        #display
+            border: none
+            background-color: $calculator-dark
+            font-family: $display-font
+            text-align: right
+            min-height: 100px
+            max-height: 200px
+            font-size: 1.6em
+            width: 100%
+            margin-top: 10px
+            color: $light-text-color
+            padding: 5px
+        #error-label
+            font-size: .65em
+            color: $error-color
+            padding: 2px
+            height: 30px
+        .keyboard-row
+            position: relative
+            margin-left: #{$calculator-padding * -1}
+            margin-right: #{$calculator-padding * -1}
+        #backspace-btn
+            font-size: 1.2em
+        .spec-btn
+            font-weight: bold
+            color: $special-orange
+        .func-btn
+            font-weight: bold
+            color: $main-green
+        .btn-col
+            &:hover
+                cursor: pointer
+                background-color: $calculator-dark
+                transition-duration: .3s
+            &:active
+                background-color: $calculator-semi-dark
+                transition-duration: .25s
+            transition-duration: .3s
+            border-radius: 4px
+            text-align: center
+            height: 60px
+            padding: 15px
+
 
 footer
     position: absolute
     width: 100vw
     bottom: 0
     height: 60px
-    border-top: 1px solid #258193
+    border-top: 1px solid $footer-text-color
     padding: 10px
     .gitlab
         .gitlab-logo
             width: 20px
     .logo
-        color: #258193
-        font-family: 'Ramaja', serif
+        color: $footer-text-color
+        font-family: $logo-font
         font-size: 20px
         font-style: italic
         position: relative
@@ -50,8 +249,13 @@ footer
             margin-left: 30px
     .footer-link
         transition-duration: .4s
-        border-color: #258193
-        color: #258193
+        border-color: $footer-text-color
+        color: $footer-text-color
         &:hover
-            background: linear-gradient(120deg, #1f317b 0%, #2ab8a5 100%)
-            color: #efeded
+            background: $main-gradient
+            color: $light-text-color
+
+#history-modal-center
+    .history-result
+        color: #128955
+        font-weight: bold

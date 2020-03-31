@@ -1,9 +1,11 @@
-oldFormula = ''
+lastFormula = ''
 syntaxError = false
 divisionError = false
 validChars = ' 0123456789.-+/:÷*^()'
 restOfTheFormula = ''
 extraChars = 0
+formulaCounter = 0
+freshAfterResult = false
 
 function charIsAnOperator(char) {
     switch(char) {
@@ -124,6 +126,15 @@ function fixTheFormula(char, caretAt, onlyCheck=false) {
         }
     } 
     else if(charIsADigit(char)) {
+        if(freshAfterResult && caretAt == undefined){
+            freshAfterResult = false
+            trimmed = ''
+            newTrim = ''
+            newVal = ''
+            lastChar = ''
+            secondToLastChar = ''
+        }
+
         if(trimmed.length == 0) { 
             trimmed += '('
             extraChars += 1
@@ -177,6 +188,7 @@ function appendCharToFormula(char) {
     if(!fixTheFormula(char)) return false
     var newVal = $('#display').val()
     newVal += char
+    destroyLastFormula()
     $('#display').val(newVal)
     $('#display').focus()
 }
@@ -190,9 +202,15 @@ function enterTheRest() {
 function isAControlKey(key) {
     if(key == 'ArrowRight' || key == 'Backspace' || key == 'ArrowLeft' ||
        key == 'ArrowUp' || key == 'ArrowDown' || key == 'Control' ||
-       key == 'Shift' ||key == 'Meta' || key == 'F5' || key == 'Alt')
+       key == 'Shift' ||key == 'Meta' || key == 'F5' || key == 'Alt' || key == 'Delete')
         return true
     else return false
+}
+
+function destroyLastFormula() {
+    $('#last-formula-label').text('')
+    lastFormula = ''
+    freshAfterResult = false
 }
 
 function inputControl() {
@@ -207,8 +225,10 @@ function inputControl() {
         return true
     }
 
-    if((e.metaKey || e.ctrlKey) && (key == 'c' || key == 'v' || key == 'a' || key == 'x') || isAControlKey(key))
+    if((e.metaKey || e.ctrlKey) && (key == 'c' || key == 'v' || key == 'a' || key == 'x') || isAControlKey(key)) {
+        if(key == 'v' || key == 'x' || key == 'Backspace' || key == 'Delete') destroyLastFormula()
         return true
+    }
 
     // text is selected
     if(caretAt != selEnd){
@@ -237,6 +257,7 @@ function inputControl() {
             $('#display').val(formula + '÷')
             enterTheRest()
             setCaretPosition('display', caretAt + 1 + extraChars)
+            destroyLastFormula()
         }
         else return false
 
@@ -250,6 +271,7 @@ function inputControl() {
                 setTimeout(function() {
                     setCaretPosition('display', caretAt + 1 + extraChars)
                 }, 0)
+                destroyLastFormula()
                 return true
             }
         }
@@ -259,9 +281,31 @@ function inputControl() {
     return false
 }
 
+function setLastFormula(response) {
+    $('#history-btn').show()
+    $('#no-history-btn').hide()
+    lastFormula = response.formula
+    formatted = lastFormula + '='
+    result = '=' + response.result.common
+    newFormulaLi = '<li id="formula-'+ formulaCounter +'"" class="list-group-item history-formula">'+ formatted +'</li>'
+    newResultLi = '<li id="result-'+ formulaCounter +'" class="list-group-item history-result">'+ result +'</li>'
+
+    $("#history-list").prepend(newResultLi)
+    $("#history-list").prepend(newFormulaLi)
+    
+    formulaCounter++
+    $('#last-formula-label').attr('title', formatted)
+    if(formatted.length > 44) {
+        formatted = formatted.substring(formatted.length - 41)
+        formatted = '...' + formatted
+    }
+    $('#last-formula-label').text(formatted)
+    freshAfterResult = true
+}
+
 function evaluate() {
     let formula = $('#display').val()
-    if(formula != oldFormula) {
+    if(formula != lastFormula) {
         if(formula.length > 0 && charIsADigit(formula[formula.length-1]))
             formula += ')'
         let xhr = new window.XMLHttpRequest()
@@ -272,7 +316,7 @@ function evaluate() {
             if (xhr.status === 200) {
                 $('#syntax').addClass('d-none')
                 let response = JSON.parse(event.target.response)
-                oldFormula = $('#display').val()
+                setLastFormula(response)
                 let result = response.result
                 $('#display').val(result.common)
                 syntaxError = false
@@ -280,13 +324,13 @@ function evaluate() {
             } else if (xhr.status == 201) {
                 $('#division').removeClass('d-none')
                 $('#display').val(formula)
-                oldFormula = $('#display').val()
+                lastFormula = formula
                 syntaxError = false
                 divisionError = true
             } else {
                 $('#syntax').removeClass('d-none')
                 $('#display').val(formula)
-                oldFormula = $('#display').val()
+                lastFormula = formula
                 divisionError = false
                 syntaxError = true
             }
@@ -300,15 +344,22 @@ function evaluate() {
 
 function backspace() {
     let oldVal = $('#display').val()
+    destroyLastFormula()
     $('#display').val(oldVal.slice(0, -1))
     $('#display').focus()
 }
 
 function clearCalc() {
     $('#display').val('')
-    oldFormula = ''
+    lastFormula = ''
+    destroyLastFormula()
     syntaxError = false
     divisionError = false
+    $('#history-btn').hide()
+    $('#no-history-btn').show()
+
+    $('#history-modal-center .history-formula').remove()
+    $('#history-modal-center .history-result').remove()
 }
 
 function handleCalculatorClick(type, char) {
@@ -332,6 +383,14 @@ function handleCalculatorClick(type, char) {
     }
 }
 
+function addProgressCursor() {
+    $('main').addClass('progress-cursor')
+}
+
+function removeProgressCursor() {
+    $('main').removeClass('progress-cursor')
+}
+
 function properCalcExpanding() {
     $('#left-panel').addClass('offset-md-3')
     $('#left-panel .calculator').removeClass('width-270')
@@ -344,16 +403,20 @@ function properCalcShrinking() {
 }
 
 function expandCalc() {
+    addProgressCursor()
     $('#right-panel').hide('fast')
     setTimeout(properCalcExpanding, 500)
+    setTimeout(removeProgressCursor, 1200)
 }
 
 function shrinkCalc() {
+    addProgressCursor()
     $('#left-panel').removeClass('offset-md-3')
     $('#left-panel .calculator').addClass('width-270')
     $('#expander').show('slow')
     $('#shrinker').hide('slow')
     setTimeout(properCalcShrinking, 1100)
+    setTimeout(removeProgressCursor, 1200)
 }
 
 

@@ -1,10 +1,19 @@
 #left-panel.col-xs-12.col-md-6
   .calculator.width-270
+    #no-history-btn.history-btn
+      %i.fas.fa-history{ title: 'No history!' }
+    #history-btn.history-btn{ "data-target" => "#history-modal-center", "data-toggle" => "modal" }
+      %i.fas.fa-history{ title: 'History' }
+      -#  History
     #expander{ title: 'Expand' }
       %i.fas.fa-chevron-right
+      -#  >
     #shrinker{ title: 'Shrink' }
       %i.fas.fa-chevron-left
+      -#  <
     .display-wrapper
+      #last-formula-label{ title: '' }
+        -#  Last formula
       %input#display{ type: 'text', onKeyDown: 'inputControl()', title: 'Display' }
     .row
       .col-6
@@ -20,7 +29,7 @@
         \/
       #backspace-btn.func-btn.btn-col.col-6{ title: 'Backspace' }
         %i.fas.fa-long-arrow-alt-left
-        // <--
+        -#  <--
     .keyboard-row.row
       #left-bracket-btn.func-btn.btn-col.col-3{ title: 'Left bracket' }
         (
@@ -29,10 +38,10 @@
       #power-btn.func-btn.btn-col.col-3{ title: 'Power' }
         x
         %sup y
-        // **
+        -#  **
       #divide-btn.func-btn.btn-col.col-3{ title: 'Divide' }
         %i.fas.fa-divide
-        // ÷
+        -#  ÷
     .keyboard-row.row
       #seven-btn.btn-col.col-3{ title: 'Seven' }
         7
@@ -42,7 +51,7 @@
         9
       #multiply-btn.func-btn.btn-col.col-3{ title: 'Multiply' }
         %i.fas.fa-times
-        // *
+        -#  *
     .keyboard-row.row
       #four-btn.btn-col.col-3{ title: 'Four' }
         4
@@ -52,7 +61,7 @@
         6
       #substract-btn.func-btn.btn-col.col-3{ title: 'Substract' }
         %i.fas.fa-minus
-        // -
+        -#  -
     .keyboard-row.row
       #one-btn.btn-col.col-3{ title: 'One' }
         1
@@ -62,7 +71,7 @@
         3
       #add-btn.func-btn.btn-col.col-3{ title: 'Add' }
         %i.fas.fa-plus
-        // +
+        -#  +
     .keyboard-row.row
       #decimal-separator-btn.btn-col.col-3{ title: 'Decimal separator' }
         \.
@@ -72,6 +81,8 @@
         _
       #result-btn.spec-btn.btn-col.col-3{ title: 'Calculate' }
         %i.fas.fa-equals
-        // =
+        -#  =
 #right-panel.col-xs-12.col-md-6
   Lol jestem panel
+
+

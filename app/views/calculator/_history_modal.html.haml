@@ -1,0 +1,12 @@
+/ Modal
+#history-modal-center.modal.fade{"aria-hidden" => "true", "aria-labelledby" => "history-modal-center-title", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.modal-dialog-centered{:role => "document"}
+    .modal-content
+      .modal-header
+        %h5#history-modal-center-title.modal-title 
+          %i.fas.fa-history
+          History
+        %button.close{"aria-label" => "Close", "data-dismiss" => "modal", :type => "button"}
+          %span{"aria-hidden" => "true"} ×
+      .modal-body
+        %ul#history-list.list-group.list-group-flush
