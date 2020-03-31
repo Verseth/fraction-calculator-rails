@@ -332,20 +332,28 @@ function handleCalculatorClick(type, char) {
     }
 }
 
-function expandCalc() {
-    $('#right-panel').hide('slow')
+function properCalcExpanding() {
     $('#left-panel').addClass('offset-md-3')
     $('#left-panel .calculator').removeClass('width-270')
     $('#expander').hide('slow')
     $('#shrinker').show('slow')
 }
 
+function properCalcShrinking() {
+    $('#right-panel').show('fast')
+}
+
+function expandCalc() {
+    $('#right-panel').hide('fast')
+    setTimeout(properCalcExpanding, 500)
+}
+
 function shrinkCalc() {
-    $('#right-panel').show('slow')
     $('#left-panel').removeClass('offset-md-3')
     $('#left-panel .calculator').addClass('width-270')
     $('#expander').show('slow')
     $('#shrinker').hide('slow')
+    setTimeout(properCalcShrinking, 1100)
 }
 
 
