@@ -83,6 +83,58 @@
         %i.fas.fa-equals
         -#  =
 #right-panel.col-xs-12.col-md-6
-  Lol front-end
+  #readme
+    .readme-title
+      Readme
+    .readme-content
+      .summary
+        .readme-heading Welcome to Fractastic!
+        This calculator treats all numbers you input as common fractions,
+        even floating point numbers like #{special '2.3'}
+      .basic-syntax
+        All number literals (individual numbers) in your formula #{bold 'have to'} be surrounded by parentheses like so: 
+        #{special '(-2/3) + (5) * (1 2/3) - (1.2)'}
+      %div
+        Thankfully this calculator is smart enough to aid you in that by inserting necessary parentheses for as you write your formula most of the time.
+      .operators
+        There are #{bold 'five'} fully supported operations:
+        %dl.row
+          %dt.col-5 Addition
+          %dd.col-7 '+' press #{special '+'}
+          %dt.col-5 Substraction
+          %dd.col-7 '-' press #{special '-'}
+          %dt.col-5 Multiplication
+          %dd.col-7 '*' press #{special '*'}
+          %dt.col-5 Division
+          %dd.col-7 '÷' press #{special 'Shift + /'}
+          %dt.col-5 Exponentiation
+          %dd.col-7 'x^y' press #{special '^'}
+      .formulas
+        Common fractions should be formatted like this: #{special '(5 1/2)'}
+        Where #{special '5'} is the #{bold 'whole part'}, followed by a space, #{special '1'}
+        is the #{bold 'numerator'} separated from the #{bold 'denominator'} (being
+        #{special '2'}) by a slash #{special '/'} which represents a fraction bar.
+
+      .history-guide
+        %i.fas.fa-history
+        \- pressing this icon grants you entry to the formulas and results currently stored in the calculators memory.
+        At least for now, memory covers only your current session, so #{bold 'if you refresh the page all of your calculations are lost'}.
+
+      .readme-heading Technical details
+      
+      .technical-details
+        This site has been coded in #{bold 'Ruby on Rails'} as a side project for fun.
+        It's  nothing more than a quick demo of my #{bold 'ruby gem'} #{special 'fractify'}
+        %div
+          The 'heart' of this calculator is not really in integral part of this site, it's hidden
+          as a part of the #{special 'fractify'} gem. This app has a single endpoint which receives asynchronous AJAX
+          requests from this calculator view. 
+        %div
+          Server then just passes the gathered formula to the #{special 'fractify'} gem, specifically
+          the #{special 'Fractify::Calculator.evaluate'} method which analyses it and returns the result (if there is any).
+        %div
+          If you're interested in this gem you can find it on my #{special 'GitLab'} and test it on your own by
+          downloading it through #{special 'rubygems.org'}
+      
 
 
