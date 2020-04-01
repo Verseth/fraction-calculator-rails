@@ -318,5 +318,8 @@ DEPENDENCIES
   turbolinks (~> 5)
   web-console (>= 3.3.0)
 
+RUBY VERSION
+   ruby 2.5.5p157
+
 BUNDLED WITH
    1.17.3
