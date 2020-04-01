@@ -28,6 +28,8 @@
 
 
 $calculator-padding: 20px
+$border-radius: 8px
+$hover-transition: .3s
 
 $light-text-color: #efeded
 $light-translucent-color: #efeded82
@@ -171,9 +173,13 @@ section#calculator
             line-height: 1.65
             color: $light-text-color
             background-color: $footer-text-color
-            border-radius: 8px
+            border-radius: $border-radius
             padding: 20px
-            overflow: scroll
+            overflow-y: scroll
+            -ms-overflow-style: none
+            scrollbar-width: none
+            &:-webkit-scrollbar
+                display: none
             .readme-title
                 padding: 3px
                 border-bottom: 1px solid $light-text-color
@@ -199,7 +205,7 @@ section#calculator
         color: $light-text-color
         width: 100%
         max-width: 600px
-        border-radius: 8px
+        border-radius: $border-radius
         background-color: $calculator-bg
         margin-left: auto
         margin-right: auto
@@ -255,11 +261,11 @@ section#calculator
             &:hover
                 cursor: pointer
                 background-color: $calculator-dark
-                transition-duration: .3s
+                transition-duration: $hover-transition
             &:active
                 background-color: $calculator-semi-dark
                 transition-duration: .25s
-            transition-duration: .3s
+            transition-duration: $hover-transition
             border-radius: 4px
             text-align: center
             height: 60px
@@ -298,6 +304,30 @@ footer
             color: $light-text-color
 
 #history-modal-center
+    .modal-content
+        border-radius: $border-radius
+        color: $light-text-color
+        .fa-history
+            color: $light-blue
+        .close
+            color: $light-text-color
+            box-shadow: none
+        .modal-header
+            border-bottom: none
+            background-color: $calculator-bg
+        .modal-body
+            background-color: $calculator-dark
+            li
+                margin-left: -15px
+                padding-right: 30px
+                margin-right: -15px
+                padding-left: 30px
+                background-color: transparent
+                transition-duration: $hover-transition
+                &:hover
+                    cursor: pointer
+                    background-color: #ffffff14
+                    transition-duration: $hover-transition
     .history-result
-        color: #128955
+        color: $main-green
         font-weight: bold

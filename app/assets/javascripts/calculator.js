@@ -290,8 +290,8 @@ function setLastFormula(response) {
     newFormulaLi = '<li id="formula-'+ formulaCounter +'"" class="list-group-item history-formula">'+ formatted +'</li>'
     newResultLi = '<li id="result-'+ formulaCounter +'" class="list-group-item history-result">'+ result +'</li>'
 
-    $("#history-list").prepend(newResultLi)
-    $("#history-list").prepend(newFormulaLi)
+    $("#history-list").append(newFormulaLi)
+    $("#history-list").append(newResultLi)
     
     formulaCounter++
     $('#last-formula-label').attr('title', formatted)
@@ -419,6 +419,17 @@ function shrinkCalc() {
     setTimeout(removeProgressCursor, 1200)
 }
 
+function setFormulaFromHistory(event) {
+    formula = $('#' + event.target.id).text()
+    idArray = event.target.id.split('-')
+    console.log(event.target.id + '= ' + formula)
+    if(idArray[0] == 'formula') formula = formula.substring(0, formula.length-1)
+    else formula = formula.substring(1)
+    destroyLastFormula()
+    $('#display').val(formula)
+    $('#history-modal-center').modal('hide')
+}
+
 
 $(document).ready( () => {
     $("#try-it").click(function() {
@@ -427,8 +438,10 @@ $(document).ready( () => {
         }, 1500)
     })
 
-    $(document).on('click', '#expander', function() { expandCalc() })
-    $(document).on('click', '#shrinker', function() { shrinkCalc() })
+    $(document).on('click', '#history-list', setFormulaFromHistory)
+
+    $(document).on('click', '#expander', expandCalc)
+    $(document).on('click', '#shrinker', shrinkCalc)
 
     $(document).on('click', '#ce-btn', function() { handleCalculatorClick('function', 'ce') })
     $(document).on('click', '#slash-btn', function() { handleCalculatorClick('symbol', '/') })
