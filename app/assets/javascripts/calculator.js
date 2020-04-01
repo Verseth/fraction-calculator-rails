@@ -40,6 +40,18 @@ function charIsADigit(char) {
     }
 }
 
+function getDisplayVal() {
+    var val
+    if(isTouchDevice()) val = $('#display').text()
+    else val = $('#display').val()
+    return val
+}
+
+function setDisplayVal(val) {
+    if(isTouchDevice()) val = $('#display').text(val)
+    else val = $('#display').val(val)
+}
+
 function setCaretPosition(elemId, caretPos) {
     var elem = document.getElementById(elemId)
 
@@ -66,7 +78,7 @@ function setCaretPosition(elemId, caretPos) {
 
 // returns true when `char` can be added to the formula
 function fixTheFormula(char, caretAt, onlyCheck=false) {
-    var newVal = $('#display').val()
+    var newVal = getDisplayVal()
     extraChars = 0
 
     if(caretAt != undefined){
@@ -180,23 +192,23 @@ function fixTheFormula(char, caretAt, onlyCheck=false) {
     }
 
     if(!onlyCheck)
-        $('#display').val(newVal)
+        setDisplayVal(newVal)
     return true
 }
 
 function appendCharToFormula(char) {
     restOfTheFormula = ''
     if(!fixTheFormula(char)) return false
-    var newVal = $('#display').val()
+    var newVal = getDisplayVal()
     newVal += char
     destroyLastFormula()
-    $('#display').val(newVal)
+    setDisplayVal(newVal)
     if(!isTouchDevice()) $('#display').focus()
 }
 
 function enterTheRest() {
-    var newVal = $('#display').val()
-    $('#display').val(newVal + restOfTheFormula)
+    var newVal = getDisplayVal()
+    setDisplayVal(newVal + restOfTheFormula)
     restOfTheFormula = ''
 }
 
@@ -233,12 +245,12 @@ function inputControl() {
 
     // text is selected
     if(caretAt != selEnd){
-        formula = $('#display').val()
+        formula = getDisplayVal()
 
         firstPart = formula.substring(0, caretAt)
         lastPart = formula.substring(selEnd)
         if(fixTheFormula(key, caretAt, true))
-            formula = $('#display').val(firstPart + lastPart)
+            formula = setDisplayVal(firstPart + lastPart)
         else {
             if (e.preventDefault) e.preventDefault() //normal browsers
             e.returnValue = false //IE
@@ -254,8 +266,8 @@ function inputControl() {
 
         if(fixTheFormula(altKey, caretAt, true)){
             fixTheFormula(altKey, caretAt)
-            formula = $('#display').val()
-            $('#display').val(formula + '÷')
+            formula = getDisplayVal()
+            setDisplayVal(formula + '÷')
             enterTheRest()
             setCaretPosition('display', caretAt + 1 + extraChars)
             destroyLastFormula()
@@ -307,7 +319,7 @@ function setLastFormula(response) {
 }
 
 function evaluate() {
-    let formula = $('#display').val()
+    let formula = getDisplayVal()
     if(formula != lastFormula) {
         if(formula.length > 0 && charIsADigit(formula[formula.length-1]))
             formula += ')'
@@ -322,18 +334,18 @@ function evaluate() {
                 setLastFormula(response)
                 let result = response.result.common
                 if(decimalResult) result = response.result.float
-                $('#display').val(result)
+                setDisplayVal(result)
                 syntaxError = false
                 divisionError = false
             } else if (xhr.status == 201) {
                 $('#division').removeClass('d-none')
-                $('#display').val(formula)
+                setDisplayVal(formula)
                 lastFormula = formula
                 syntaxError = false
                 divisionError = true
             } else {
                 $('#syntax').removeClass('d-none')
-                $('#display').val(formula)
+                setDisplayVal(formula)
                 lastFormula = formula
                 divisionError = false
                 syntaxError = true
@@ -347,14 +359,14 @@ function evaluate() {
 }
 
 function backspace() {
-    let oldVal = $('#display').val()
+    let oldVal = getDisplayVal()
     destroyLastFormula()
-    $('#display').val(oldVal.slice(0, -1))
+    setDisplayVal(oldVal.slice(0, -1))
     if(!isTouchDevice()) $('#display').focus()
 }
 
 function clearCalc() {
-    $('#display').val('')
+    setDisplayVal('')
     lastFormula = ''
     destroyLastFormula()
     syntaxError = false
@@ -430,13 +442,19 @@ function setFormulaFromHistory(event) {
     if(idArray[0] == 'formula') formula = formula.substring(0, formula.length-1)
     else formula = formula.substring(1)
     destroyLastFormula()
-    $('#display').val(formula)
+    setDisplayVal(formula)
     $('#history-modal-center').modal('hide')
 }
 
 function toggleDecimalResult() {
-    $('#decimal-toggle').toggleClass("on")
+    $('#decimal-toggle').toggleClass('on')
     decimalResult = !decimalResult
+}
+
+function replaceDisplay() {
+    $('#display').remove()
+    var mobileDisplay = '<div id="display" class="display-touch" title="Display"></div>'
+    $('#left-panel .display-wrapper').append(mobileDisplay)
 }
 
 // Credit to boldmaster2
@@ -464,6 +482,8 @@ $(document).ready( () => {
             scrollTop: $('#reveal-main').offset().top
         }, 1500)
     })
+
+    if(isTouchDevice()) replaceDisplay()
 
     $(document).on('click', '#decimal-toggle', toggleDecimalResult)
     $(document).on('click', '#history-list', setFormulaFromHistory)

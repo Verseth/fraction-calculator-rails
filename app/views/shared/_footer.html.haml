@@ -1,14 +1,12 @@
 %footer.row
-  .logo.col-xs-4.col-sm-4.col-md-3.col-lg-3
+  .logo.col-xs-8.col-sm-10.col-md-3.col-lg-3
     %img.favicon{ alt: 'Gitlab', src: asset_path('favicon.png') }
-    %span
-      Fractastic!
-  .col-xs-4.col-sm-4.col-md-3.col-lg-2.offset-lg-5.offset-md-3
-    .gitlab
-      %a.btn.footer-link{ href: 'https://gitlab.com/Verseth'}
-        %img.footer-logo{ alt: 'Gitlab', src: asset_path('gitlab_logo.png') }
-        My GitLab
-  .col-xs-4.col-sm-4.col-md-3.col-lg-2
+    %span Fractastic!
+  .footer-link-col.col-xs-2.col-sm-1.col-md-3.col-lg-2.offset-lg-5.offset-md-3
+    %a.btn.footer-link{ href: 'https://gitlab.com/Verseth'}
+      %img.footer-logo{ alt: 'Gitlab', src: asset_path('gitlab_logo.png') }
+      %span My GitLab
+  .footer-link-col.col-xs-2.col-sm-1.col-md-3.col-lg-2
     %a.btn.footer-link{ href: 'https://gitlab.com/Verseth/fraction-calculator-rails'}
       %img.footer-logo{ alt: 'Ruby', src: asset_path('ruby.png') }
-      The source
+      %span The source

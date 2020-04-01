@@ -13,6 +13,17 @@
     70%
         transform: translate(-50%, -50%)
 
+@media screen and (max-width: 576px)
+    footer
+        .logo
+            flex: 0 0 calc(100% - 130px)
+            max-width: calc(100% - 130px)
+        .footer-link-col
+            flex: 0 0 46px
+            max-width: calc(46px + 15px)
+            padding-left: 5px
+            padding-right: 5px
+
 @media screen and (max-width: 767px)
     #expander, #shrinker
         display: none !important
@@ -22,10 +33,29 @@
         #left-panel
             .calculator
                 width: 270px
+    footer
+        a span
+            display: none
 @media screen and (min-height: 1000px)
     section#calculator
         font-size: 1.2em
 
+@media screen and (max-width: 300px)
+    .container-fluid main section#calculator #left-panel
+        div.width-270
+            width: 230px
+
+@media screen and (max-height: 610px)
+    section#calculator
+        #left-panel
+            .calculator
+                font-size: 0.85em
+                #decimal-toggle, .history-btn
+                    font-size: 15px
+                .keyboard-row
+                    .btn-col
+                        height: 40px
+                        padding: 8px
 
 $calculator-padding: 20px
 $border-radius: 8px
@@ -259,6 +289,8 @@ section#calculator
             margin-top: 10px
             color: $light-text-color
             padding: 5px
+        .display-touch
+            padding-top: .8em
         #error-label
             font-size: .65em
             color: $error-color
