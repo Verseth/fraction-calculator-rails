@@ -41,21 +41,21 @@ function charIsADigit(char) {
 }
 
 function setCaretPosition(elemId, caretPos) {
-    var elem = document.getElementById(elemId);
+    var elem = document.getElementById(elemId)
 
     if(elem != null) {
         if(elem.createTextRange) {
-            var range = elem.createTextRange();
-            range.move('character', caretPos);
-            range.select();
+            var range = elem.createTextRange()
+            range.move('character', caretPos)
+            range.select()
         }
         else {
             if(elem.selectionStart) {
-                elem.focus();
-                elem.setSelectionRange(caretPos, caretPos);
+                elem.focus()
+                elem.setSelectionRange(caretPos, caretPos)
             }
             else
-                elem.focus();
+                elem.focus()
         }
     }
 }
@@ -191,7 +191,7 @@ function appendCharToFormula(char) {
     newVal += char
     destroyLastFormula()
     $('#display').val(newVal)
-    $('#display').focus()
+    if(!isTouchDevice()) $('#display').focus()
 }
 
 function enterTheRest() {
@@ -350,7 +350,7 @@ function backspace() {
     let oldVal = $('#display').val()
     destroyLastFormula()
     $('#display').val(oldVal.slice(0, -1))
-    $('#display').focus()
+    if(!isTouchDevice()) $('#display').focus()
 }
 
 function clearCalc() {
@@ -437,6 +437,24 @@ function setFormulaFromHistory(event) {
 function toggleDecimalResult() {
     $('#decimal-toggle').toggleClass("on")
     decimalResult = !decimalResult
+}
+
+// Credit to boldmaster2
+// https://stackoverflow.com/questions/4817029/whats-the-best-way-to-detect-a-touch-screen-device-using-javascript/4819886#4819886
+function isTouchDevice() {
+    var prefixes = ' -webkit- -moz- -o- -ms- '.split(' ')
+    var mq = function (query) {
+        return window.matchMedia(query).matches
+    }
+
+    if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+        return true
+    }
+
+    // include the 'heartz' as a way to have a non matching MQ to help terminate the join
+    // https://git.io/vznFH
+    var query = ['(', prefixes.join('touch-enabled),('), 'heartz', ')'].join('')
+    return mq(query)
 }
 
 
