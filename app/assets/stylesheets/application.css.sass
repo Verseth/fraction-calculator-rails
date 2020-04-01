@@ -277,6 +277,9 @@ section#calculator
             margin-left: #{$calculator-padding * -1}
             margin-right: #{$calculator-padding * -1}
             position: relative
+        .display-wrapper.touch
+            #last-formula-label
+                top: 0
         #display
             border: none
             background-color: darken($calculator-bg, 10%)
@@ -289,8 +292,10 @@ section#calculator
             margin-top: 10px
             color: $light-text-color
             padding: 5px
-        .display-touch
+        #display.display-touch
+            top: 0
             padding-top: .8em
+            padding-right: 5px
         #error-label
             font-size: .65em
             color: $error-color

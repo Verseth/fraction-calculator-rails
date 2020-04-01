@@ -455,6 +455,7 @@ function replaceDisplay() {
     $('#display').remove()
     var mobileDisplay = '<div id="display" class="display-touch" title="Display"></div>'
     $('#left-panel .display-wrapper').append(mobileDisplay)
+    $('#left-panel .display-wrapper').addClass('touch')
 }
 
 // Credit to boldmaster2
