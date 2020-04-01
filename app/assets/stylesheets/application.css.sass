@@ -32,20 +32,16 @@ $border-radius: 8px
 $hover-transition: .3s
 
 $light-text-color: #efeded
-$light-translucent-color: #efeded82
 $calculator-bg: #2a3940eb
-$calculator-dark: #212d32eb
-$calculator-semi-dark: #212d32a6
-$main-green: #2ab8a5
-$main-blue: #1f317b
-$light-blue: #00bcd4
+$main-second: #2ab8a5
+$main-first: #1f317b
+$light-first: #00bcd4
 $error-color: #ff3223
-$special-orange: #da6e0c
-$darker-orange: $special-orange
+$special-color: #da6e0c
 $footer-text-color: #258193
 
 $body-gradient: linear-gradient(50deg, #b2cfd8 0%, #6bc1b6 100%)
-$main-gradient: linear-gradient(120deg, $main-blue 0%, $main-green 100%)
+$main-gradient: linear-gradient(120deg, $main-first 0%, $main-second 100%)
 
 $display-font: 'Rationale', sans-serif
 $standard-font: 'Montserrat', sans-serif
@@ -122,7 +118,7 @@ a
 
 .special-text
     color: $light-text-color
-    background-color: $special-orange
+    background-color: $special-color
     padding: 2px 5px
     border-radius: 3px
 
@@ -131,19 +127,42 @@ a
 
 section#calculator
     height: calc(93vh - 60px)
-
+    transition-duration: $hover-transition
+    #decimal-toggle
+        display: block
+        position: absolute
+        top: 4px
+        font-size: .8em
+        right: 8px
+        color: rgba($light-text-color, .5)
+        cursor: pointer
+        padding: 0 5px
+        border-radius: 3px
+        transition-duration: $hover-transition
+        &:hover
+            color: rgba($light-text-color, .75)
+    #decimal-toggle.on
+        background-color: $light-first
+        color: $light-text-color
+        transition-duration: $hover-transition
+        &:hover
+            transition-duration: $hover-transition
+            background-color: lighten($light-first, 5%) 
     .history-btn
         position: absolute
         top: 3px
         font-size: .9em
         left: 7px
-        color: $light-blue
+        color: $light-first
         cursor: pointer
     #no-history-btn
-        color: $light-translucent-color
+        color: rgba($light-text-color, .5)
         cursor: help
     #history-btn
         display: none
+        &:hover
+            transition-duration: $hover-transition
+            color: lighten($light-first, 5%)
     #last-formula-label
         text-align: right
         font-family: $display-font
@@ -151,7 +170,7 @@ section#calculator
         position: absolute
         top: 11px
         right: 0
-        color: $light-translucent-color
+        color: rgba($light-text-color, .5)
         width: 100%
         white-space: nowrap                  
         overflow: hidden
@@ -217,7 +236,7 @@ section#calculator
         transform: translate(-50%, -50%)
         #expander, #shrinker
             cursor: pointer
-            color: $darker-orange
+            color: $special-color
             position: absolute
             bottom: 50%
             right: -1em
@@ -230,7 +249,7 @@ section#calculator
             position: relative
         #display
             border: none
-            background-color: $calculator-dark
+            background-color: darken($calculator-bg, 10%)
             font-family: $display-font
             text-align: right
             min-height: 100px
@@ -253,17 +272,17 @@ section#calculator
             font-size: 1.2em
         .spec-btn
             font-weight: bold
-            color: $special-orange
+            color: $special-color
         .func-btn
             font-weight: bold
-            color: $main-green
+            color: $light-first
         .btn-col
             &:hover
                 cursor: pointer
-                background-color: $calculator-dark
+                background-color: darken($calculator-bg, 10%)
                 transition-duration: $hover-transition
             &:active
-                background-color: $calculator-semi-dark
+                background-color: darken($calculator-bg, 5%)
                 transition-duration: .25s
             transition-duration: $hover-transition
             border-radius: 4px
@@ -307,7 +326,7 @@ footer
         border-radius: $border-radius
         color: $light-text-color
         .fa-history
-            color: $light-blue
+            color: $light-first
         .close
             color: $light-text-color
             box-shadow: none
@@ -315,7 +334,7 @@ footer
             border-bottom: none
             background-color: $calculator-bg
         .modal-body
-            background-color: $calculator-dark
+            background-color: darken($calculator-bg, 10%)
             li
                 margin-left: -15px
                 padding-right: 30px
@@ -328,5 +347,5 @@ footer
                     background-color: #ffffff14
                     transition-duration: $hover-transition
     .history-result
-        color: $main-green
+        color: $light-first
         font-weight: bold

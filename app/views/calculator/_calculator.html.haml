@@ -4,6 +4,8 @@
       %i.fas.fa-history{ title: 'No history!' }
     #history-btn.history-btn{ "data-target" => "#history-modal-center", "data-toggle" => "modal" }
       %i.fas.fa-history{ title: 'History' }
+    #decimal-toggle{ title: 'Decimal result toggle' }
+      Decimal
       -#  History
     #expander{ title: 'Expand' }
       %i.fas.fa-chevron-right
@@ -119,6 +121,11 @@
         %i.fas.fa-history
         \- pressing this icon grants you entry to the formulas and results currently stored in the calculators memory.
         At least for now, memory covers only your current session, so #{bold 'if you refresh the page all of your calculations are lost'}.
+
+      .decimal-toggle-part
+        Pressing the #{special 'Decimal'} button will make the calculator return results as decimal fractions.
+        This button is just a simple toggle, so you can always set it back to show results as common fractions by simply
+        pressing the button a second time.
 
       .readme-heading Technical details
       

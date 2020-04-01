@@ -8,7 +8,7 @@ class Api::CalculateController < ApplicationController
         formula: params[:formula],
         result: {
           common: result.to_s,
-          float: result.to_f.to_s
+          float: format_float_string(result.to_f)
         }
       }
       render json: response.to_json, status: 200
@@ -28,5 +28,11 @@ class Api::CalculateController < ApplicationController
       response = { error: 'Wrong arguments!', formula: params[:formula] }
       render json: response.to_json, status: 400
     end
+  end
+
+  def format_float_string(float)
+    result = float == float.to_i ? float.to_i.to_s : float.to_s
+
+    "(#{result})"
   end
 end

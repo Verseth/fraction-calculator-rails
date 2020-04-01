@@ -6,6 +6,7 @@ restOfTheFormula = ''
 extraChars = 0
 formulaCounter = 0
 freshAfterResult = false
+decimalResult = false
 
 function charIsAnOperator(char) {
     switch(char) {
@@ -285,8 +286,10 @@ function setLastFormula(response) {
     $('#history-btn').show()
     $('#no-history-btn').hide()
     lastFormula = response.formula
-    formatted = lastFormula + '='
-    result = '=' + response.result.common
+    var formatted = lastFormula + '='
+    var result
+    if(decimalResult) result = '=' + response.result.float
+    else result = '=' + response.result.common
     newFormulaLi = '<li id="formula-'+ formulaCounter +'"" class="list-group-item history-formula">'+ formatted +'</li>'
     newResultLi = '<li id="result-'+ formulaCounter +'" class="list-group-item history-result">'+ result +'</li>'
 
@@ -317,8 +320,9 @@ function evaluate() {
                 $('#syntax').addClass('d-none')
                 let response = JSON.parse(event.target.response)
                 setLastFormula(response)
-                let result = response.result
-                $('#display').val(result.common)
+                let result = response.result.common
+                if(decimalResult) result = response.result.float
+                $('#display').val(result)
                 syntaxError = false
                 divisionError = false
             } else if (xhr.status == 201) {
@@ -430,14 +434,20 @@ function setFormulaFromHistory(event) {
     $('#history-modal-center').modal('hide')
 }
 
+function toggleDecimalResult() {
+    $('#decimal-toggle').toggleClass("on")
+    decimalResult = !decimalResult
+}
+
 
 $(document).ready( () => {
-    $("#try-it").click(function() {
+    $('#try-it').click(function() {
         $([document.documentElement, document.body]).animate({
-            scrollTop: $("#reveal-main").offset().top
+            scrollTop: $('#reveal-main').offset().top
         }, 1500)
     })
 
+    $(document).on('click', '#decimal-toggle', toggleDecimalResult)
     $(document).on('click', '#history-list', setFormulaFromHistory)
 
     $(document).on('click', '#expander', expandCalc)
