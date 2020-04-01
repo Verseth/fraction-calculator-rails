@@ -204,6 +204,7 @@ function appendCharToFormula(char) {
     destroyLastFormula()
     setDisplayVal(newVal)
     if(!isTouchDevice()) $('#display').focus()
+    else $('#display').scrollLeft(1200)
 }
 
 function enterTheRest() {
